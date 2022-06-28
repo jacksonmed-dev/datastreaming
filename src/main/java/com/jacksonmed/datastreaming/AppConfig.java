@@ -17,6 +17,10 @@ public class AppConfig {
     private String username;
     @Value("${spring.data.cassandra.password}")
     private String password;
+
+    @Value("spring.data.cassandra.keyspace-name")
+    private String keySpace;
+
     File driverConfig = new File(System.getProperty("user.dir")+"/src/main/resources/application.conf");
 
     @Primary
