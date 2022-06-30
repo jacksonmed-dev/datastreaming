@@ -21,33 +21,35 @@ public class TestDaoImpl implements TestDao{
 
     @Override
     public void insertTestData(Test testData) {
-        CompletionStage<CqlSession> sessionStage = CqlSession.builder().buildAsync();
+//        CompletionStage<CqlSession> sessionStage = CqlSession.builder().buildAsync();
 
-        PreparedStatement ps = cqlSession.prepare(SELECT_TEST_BY_NAME);
+        PreparedStatement ps = cqlSession.prepare(INSERT_TEST);
         BoundStatement bs = ps.bind()
                 .setString(0, testData.name)
                 .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);
 
-        // Chain one async operation after another:
-        CompletionStage<AsyncResultSet> responseStage =
-                sessionStage.thenCompose(
-                        session -> session.executeAsync(bs));
+        cqlSession.execute(bs);
 
-        // Apply a synchronous computation:
-        CompletionStage<String> resultStage =
-                responseStage.thenApply(resultSet -> resultSet.one().getString("test"));
-
-
-        // Perform an action once a stage is complete:
-        resultStage.whenComplete(
-                (version, error) -> {
-                    if (error != null) {
-                        System.out.printf("Failed to retrieve the version: %s%n", error.getMessage());
-                    } else {
-                        System.out.printf("Server version: %s%n", version);
-                    }
-                    sessionStage.thenAccept(CqlSession::closeAsync);
-                });
+//        // Chain one async operation after another:
+//        CompletionStage<AsyncResultSet> responseStage =
+//                sessionStage.thenCompose(
+//                        session -> session.executeAsync(bs));
+//
+//        // Apply a synchronous computation:
+//        CompletionStage<String> resultStage =
+//                responseStage.thenApply(resultSet -> resultSet.one().getString("test"));
+//
+//
+//        // Perform an action once a stage is complete:
+//        resultStage.whenComplete(
+//                (version, error) -> {
+//                    if (error != null) {
+//                        System.out.printf("Failed to retrieve the version: %s%n", error.getMessage());
+//                    } else {
+//                        System.out.printf("Server version: %s%n", version);
+//                    }
+//                    sessionStage.thenAccept(CqlSession::closeAsync);
+//                });
     }
 
     @Override

@@ -35,7 +35,7 @@ public class TestController {
 //            Row row = rs.one();
 //            System.out.println(row);
             Test test = new Test();
-            test.setName("Cole");
+            test.setName("Tommy");
 //            testService.getTestData(test.getName());
             testService.insertTestData(test);
             return "This is a test of the /test api endpoint";
