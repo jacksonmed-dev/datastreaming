@@ -5,12 +5,11 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
 import com.jacksonmed.datastreaming.model.Patient;
-import com.jacksonmed.datastreaming.model.SensorImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("PatientInfoDaoImpl")
-public class PatientInfoDaoImpl implements PatientInfoDao {
+public class PatientDaoImpl implements PatientDao {
     private static final String INSERT_PATIENT_INFO = "insert into test (name) values (?)";
     private static final String SELECT_PATIENT_INFO_BY_UNIQUE_ID = "select * from test where name = ?";
     @Autowired

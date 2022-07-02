@@ -5,7 +5,7 @@ import com.jacksonmed.datastreaming.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("PatientController")
 public class PatientController {
     @Autowired
     PatientService patientService;
