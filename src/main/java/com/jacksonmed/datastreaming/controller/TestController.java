@@ -1,15 +1,11 @@
 package com.jacksonmed.datastreaming.controller;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
-import com.datastax.oss.driver.api.core.cql.ResultSet;
-import com.datastax.oss.driver.api.core.cql.Row;
-import com.jacksonmed.datastreaming.dao.TestDao;
-import com.jacksonmed.datastreaming.dao.TestDaoImpl;
+import com.jacksonmed.datastreaming.model.Patient;
 import com.jacksonmed.datastreaming.model.Test;
 import com.jacksonmed.datastreaming.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,8 +18,8 @@ public class TestController {
         return "Hello Jackson Med!!! We have an API!!";
     }
 
-    @GetMapping("/test")
-    public String test() {
+    @GetMapping("/test1/{name}")
+    public String test(@PathVariable String name) {
         //set up java object to save to cassandra
         //Use DriverConfigLoader to load your configuration file
 //        DriverConfigLoader loader = DriverConfigLoader.fromClasspath("application.conf");
@@ -34,10 +30,18 @@ public class TestController {
 //            ResultSet rs = session.execute("select * from jms_keyspace1.test");
 //            Row row = rs.one();
 //            System.out.println(row);
-            Test test = new Test();
-            test.setName("Tommy");
+        Test test = new Test();
+        test.setName(name);
 //            testService.getTestData(test.getName());
-            testService.insertTestData(test);
-            return "This is a test of the /test api endpoint";
+        testService.insertTestData(test);
+        return "This is a test of the /test api endpoint";
     }
+
+    @GetMapping("/test2/{name}")
+    public Test get(@PathVariable String name) {
+        return testService.getTestData(name);
+    }
+
+
 }
+

@@ -1,15 +1,36 @@
 package com.jacksonmed.datastreaming.model;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
-import org.springframework.data.cassandra.core.mapping.Table;
 
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
-@Table
+@Table(name = "patient")
 public class Patient {
     @PrimaryKey
+    @Id
+    @Column(name="patient_id")
+    public String patientId;
+
+    @Column(name="name")
     public String name;
+    @Column(name="height")
+    public int height;
+    @Column(name="weight")
     public int weight;
+    @Column(name="date_of_birth")
+    public LocalDate DateOfBirth;
+    @Column(name="gender")
+    public String gender;
+    @Column(name="preconditions")
+    public String preConditions;
+
+    @Column(name="braden_scale")
+    public int bradenScale;
+    public Patient() {
+    }
+
 
     public String getName() {
         return name;
@@ -23,9 +44,69 @@ public class Patient {
         return weight;
     }
 
+    public Patient(String patientId, String name, int height, int weight, LocalDate dateOfBirth, String gender, String preConditions, int bradenScale) {
+        this.patientId = patientId;
+        this.name = name;
+        this.height = height;
+        this.weight = weight;
+        DateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.preConditions = preConditions;
+        this.bradenScale = bradenScale;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        DateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPreConditions() {
+        return preConditions;
+    }
+
+    public void setPreConditions(String preConditions) {
+        this.preConditions = preConditions;
+    }
+
     public void setWeight(int weight) {
         this.weight = weight;
     }
+
+    public int getBradenScale() {
+        return bradenScale;
+    }
+
+    public void setBradenScale(int bradenScale) {
+        this.bradenScale = bradenScale;
+    }
+
 
     @Override
     public boolean equals(Object o) {

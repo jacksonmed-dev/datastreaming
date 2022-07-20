@@ -54,11 +54,14 @@ public class TestDaoImpl implements TestDao{
 
     @Override
     public Test retrieveTestData(String name) {
+        Object tempTest;
+
         PreparedStatement ps = cqlSession.prepare(SELECT_TEST_BY_NAME);
         BoundStatement bs = ps.bind()
                 .setString(0, name)
                 .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);
-        cqlSession.execute(bs);
+        tempTest = cqlSession.execute(bs);
+
         return new Test();
     }
 }

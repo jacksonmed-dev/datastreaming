@@ -1,3 +1,5 @@
+
+
 package com.jacksonmed.datastreaming.controller;
 
 import com.jacksonmed.datastreaming.model.Patient;
@@ -13,12 +15,15 @@ public class PatientController {
 //    @RequestMapping(value = "/patient", method = RequestMethod.GET, produces = "application/json")
 
     @PostMapping("/sensor_data")
+    @ResponseBody
     public void insert(@RequestBody Patient patient) {
         patientService.insertPatient(patient);
     }
 
-    @GetMapping("/sensor_data")
-    public Patient get(String uniqueId) {
+    @GetMapping("/sensor_data/patient/{uniqueId}")
+    public Patient get(@PathVariable String uniqueId) {
         return patientService.retrievePatient(uniqueId);
     }
 }
+
+

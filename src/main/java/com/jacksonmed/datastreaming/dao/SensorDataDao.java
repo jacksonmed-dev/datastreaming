@@ -1,10 +1,11 @@
 package com.jacksonmed.datastreaming.dao;
 
-import com.jacksonmed.datastreaming.model.SensorImage;
-import com.jacksonmed.datastreaming.model.Test;
+import com.jacksonmed.datastreaming.model.SensorData;
 
 public interface SensorDataDao {
-    void insertSensorImageData(SensorImage sensorImage);
-    SensorImage retrieveSensorImageData(String uniqueId);
+    void insertSensorData(SensorData sensorData);
+    SensorData retrieveSensorData(String uniqueId);
+
+
 
 }

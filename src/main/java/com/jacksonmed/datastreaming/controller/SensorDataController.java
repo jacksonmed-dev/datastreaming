@@ -1,30 +1,24 @@
 package com.jacksonmed.datastreaming.controller;
 
-import com.jacksonmed.datastreaming.model.SensorImage;
+import com.jacksonmed.datastreaming.model.Patient;
+import com.jacksonmed.datastreaming.model.SensorData;
+import com.jacksonmed.datastreaming.service.PatientService;
 import com.jacksonmed.datastreaming.service.SensorDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("SensorDataController")
+@RestController
 public class SensorDataController {
     @Autowired
     SensorDataService sensorDataService;
-
-    @PutMapping("/sensor_data")
-    public String insert() {
-        SensorImage test = new SensorImage();
-        sensorDataService.insertSensorImageData(test);
-        return null;
+    @GetMapping("/sensor_data/{sensorDataId}")
+    public SensorData getSensorData(@PathVariable String sensorDataId) {
+        return sensorDataService.getSensorData(sensorDataId);
     }
-
-    @GetMapping("/sensor_data")
-    public SensorImage get() {
-        String tempId = "TEST";
-        return sensorDataService.getSensorImageData(tempId);
+    @PostMapping("/sensor_data/insert")
+    @ResponseBody
+    public void insert(@RequestBody SensorData sensorData) {
+        sensorDataService.insertSensorData(sensorData);
     }
-
 
 }

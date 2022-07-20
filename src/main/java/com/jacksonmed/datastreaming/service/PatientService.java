@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 public class PatientService {
     @Autowired
     PatientDao patientDao;
-
     public Patient retrievePatient(String uniqueId) {
         return patientDao.retrievePatient(uniqueId);
     }
