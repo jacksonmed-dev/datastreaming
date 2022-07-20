@@ -13,15 +13,15 @@ public class SensorData {
 
     @Id
     @Column(name = "time_stamp")
-    public LocalDate timeStamp;
+    public String timeStamp;
 
     @Column(name = "sensor_data_id")
     public String sensorDataId;
 
     @Column(name = "sensor_image")
-    public byte[] sensorImage;
+    public String sensorImage;
 
-    public SensorData(String patientId, String sensorDataId, LocalDate timeStamp, byte[] sensorImage) {
+    public SensorData(String patientId, String sensorDataId, String timeStamp, String sensorImage) {
         this.patientId = patientId;
         this.sensorDataId = sensorDataId;
         this.timeStamp = timeStamp;
@@ -47,19 +47,21 @@ public class SensorData {
         this.sensorDataId = sensorDataId;
     }
 
-    public LocalDate getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
 
-    public byte[] getSensorImage() {
+    public String getSensorImage() {
         return sensorImage;
     }
 
-    public void setSensorImage(byte[] sensorImage) {
+    public void setSensorImage(String sensorImage) {
         this.sensorImage = sensorImage;
     }
+
+
 }

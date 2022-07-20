@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @RestController
 public class SensorDataController {
@@ -17,16 +18,22 @@ public class SensorDataController {
     public SensorData getSensorData(@PathVariable String sensorDataId) {
         return sensorDataService.getSensorData(sensorDataId);
     }
+//    @PostMapping("/sensor_data/insert")
+//    @ResponseBody
+//    public void insert(@RequestBody SensorData sensorData) {
+//        sensorDataService.insertSensorData(sensorData);
+//    }
     @PostMapping("/sensor_data/insert")
     @ResponseBody
     public void insert(@RequestBody SensorData sensorData) {
-        sensorDataService.insertSensorData(sensorData);
-    }
 
-    @GetMapping("/sensor_data/insert/test")
-    public void insertTest() {
-        SensorData sensorData = new SensorData("p1", "sensor1", LocalDate.now(), null);
-        sensorDataService.insertSensorData(sensorData);
-    }
+    sensorDataService.insertSensorData(sensorData);
+}
+
+//    @GetMapping("/sensor_data/insert/test")
+//    public void insertTest() {
+//        SensorData sensorData = new SensorData("p1", "sensor1", LocalDate.now(), null);
+//        sensorDataService.insertSensorData(sensorData);
+//    }
 
 }

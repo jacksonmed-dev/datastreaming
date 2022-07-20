@@ -64,18 +64,16 @@ public class SensorDataDaoImpl implements SensorDataDao {
     @Override
     public void insertSensorData(SensorData sensorData){
         try {
-            byte[] value = convertFileContentToBlob("/Users/colestanfield/Downloads/unknown.png");
             PreparedStatement ps = cqlSession.prepare(INSERT_SENSOR_DATA);
 
-            LocalDate date = LocalDate.parse("9999-12-31");
-            Instant instant = date.atStartOfDay(ZoneId.of("Europe/Paris")).toInstant();
+
 
             BoundStatement bs = ps.bind()
                     .setString(0, sensorData.getPatientId())
-                    .setInstant(1, instant)
+                    .setInstant(1, LocalDate.parse(sensorData.getTimeStamp()).atStartOfDay(ZoneId.of("America/Phoenix")).toInstant())
                     .setString(2, sensorData.getSensorDataId())
-                    .setBytesUnsafe(3, ByteBuffer.wrap(value))
-                    .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);;
+                    .setBytesUnsafe(3, ByteBuffer.wrap(convertFileContentToBlob(sensorData.getSensorImage())))
+                    .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);
             cqlSession.execute(bs);
         }catch (Exception e) {
             e.printStackTrace();
