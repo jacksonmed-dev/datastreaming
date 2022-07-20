@@ -16,12 +16,12 @@ public class MLModelController {
 
 //    @RequestMapping(value = "/patient", method = RequestMethod.GET, produces = "application/json")
 
-    @PostMapping("/sensor_data")
+    @PostMapping("/ml_model")
     public void insert(@RequestBody MLModel mlModel) {
         mlModelService.insertMLModel(mlModel);
     }
 
-    @GetMapping("/sensor_data")
+    @GetMapping("/ml_model")
     public MLModel get(String uniqueId) {
         return mlModelService.retrieveMLModel(uniqueId);
     }

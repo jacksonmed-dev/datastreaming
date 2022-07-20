@@ -1,5 +1,6 @@
 package com.jacksonmed.datastreaming.dao;
 
+import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
@@ -12,8 +13,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Component("SensorDataDaoImpl")
 public class SensorDataDaoImpl implements SensorDataDao {
@@ -49,24 +57,29 @@ public class SensorDataDaoImpl implements SensorDataDao {
         return fileContent;
     }
 
-    byte[] value = convertFileContentToBlob("/Users/tommyhsiao/Desktop/Image/2.png");
-    Blob blob = new SerialBlob(value);
+
 
 
 
     @Override
     public void insertSensorData(SensorData sensorData){
-        PreparedStatement ps = cqlSession.prepare(INSERT_SENSOR_DATA);
+        try {
+            byte[] value = convertFileContentToBlob("/Users/colestanfield/Downloads/unknown.png");
+            PreparedStatement ps = cqlSession.prepare(INSERT_SENSOR_DATA);
 
-        BoundStatement bs = ps.bind()
-                .setString(0, sensorData.getPatientId())
-                .setLocalDate(1, sensorData.getTimeStamp())
-                .setString(2, sensorData.getSensorDataId());
-        cqlSession.execute(bs);
+            LocalDate date = LocalDate.parse("9999-12-31");
+            Instant instant = date.atStartOfDay(ZoneId.of("Europe/Paris")).toInstant();
 
-
-
-
+            BoundStatement bs = ps.bind()
+                    .setString(0, sensorData.getPatientId())
+                    .setInstant(1, instant)
+                    .setString(2, sensorData.getSensorDataId())
+                    .setBytesUnsafe(3, ByteBuffer.wrap(value))
+                    .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);;
+            cqlSession.execute(bs);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

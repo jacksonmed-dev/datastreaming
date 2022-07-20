@@ -7,6 +7,8 @@ import com.jacksonmed.datastreaming.service.SensorDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 public class SensorDataController {
     @Autowired
@@ -18,6 +20,12 @@ public class SensorDataController {
     @PostMapping("/sensor_data/insert")
     @ResponseBody
     public void insert(@RequestBody SensorData sensorData) {
+        sensorDataService.insertSensorData(sensorData);
+    }
+
+    @GetMapping("/sensor_data/insert/test")
+    public void insertTest() {
+        SensorData sensorData = new SensorData("p1", "sensor1", LocalDate.now(), null);
         sensorDataService.insertSensorData(sensorData);
     }
 

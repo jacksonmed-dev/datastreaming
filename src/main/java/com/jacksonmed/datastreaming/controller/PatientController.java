@@ -1,5 +1,3 @@
-
-
 package com.jacksonmed.datastreaming.controller;
 
 import com.jacksonmed.datastreaming.model.Patient;
@@ -25,5 +23,3 @@ public class PatientController {
         return patientService.retrievePatient(uniqueId);
     }
 }
-
-

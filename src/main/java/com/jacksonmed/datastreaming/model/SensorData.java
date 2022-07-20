@@ -1,21 +1,24 @@
 package com.jacksonmed.datastreaming.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import java.sql.Timestamp;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-@Entity
-@IdClass(SensorDataPk.class)
+
+@Table(name = "sensor_data")
+//@IdClass(SensorDataPk.class)
 public class SensorData {
     @Id
+    @Column(name = "patient_id")
     public String patientId;
-    public String sensorDataId;
+
     @Id
+    @Column(name = "time_stamp")
     public LocalDate timeStamp;
+
+    @Column(name = "sensor_data_id")
+    public String sensorDataId;
+
+    @Column(name = "sensor_image")
     public byte[] sensorImage;
 
     public SensorData(String patientId, String sensorDataId, LocalDate timeStamp, byte[] sensorImage) {
@@ -24,6 +27,9 @@ public class SensorData {
         this.timeStamp = timeStamp;
         this.sensorImage = sensorImage;
     }
+
+    public SensorData() {}
+
 
     public String getPatientId() {
         return patientId;
