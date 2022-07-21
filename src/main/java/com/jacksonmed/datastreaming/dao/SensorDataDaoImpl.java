@@ -92,39 +92,6 @@ public class SensorDataDaoImpl implements SensorDataDao {
         }
     }
 
-//    @Override
-//    public SensorData retrieveSensorData(String uniqueId) {
-//        return null;
-//    }
-
-
-//    @Override
-//    public SensorData retrieveSensorData(String uniqueId) {
-//        Patient patient = null;
-//        PreparedStatement ps = cqlSession.prepare(SELECT_PATIENT_INFO_BY_UNIQUE_ID);
-//        BoundStatement bs = ps.bind()
-//                .setString(0, uniqueId)
-//                .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);
-//        ResultSet rs = cqlSession.execute(bs);
-//        Iterator<Row> rsIterator = rs.iterator();
-//        if (rsIterator.hasNext())
-//        {
-//            Row row = rsIterator.next();
-//            patient = new Patient();
-//            patient.setPatientId(row.getString("patient_id"));
-//            patient.setBradenScale(row.getInt("braden_scale"));
-//            patient.setDateOfBirth(row.getLocalDate("date_of_birth"));
-//            patient.setGender(row.getString("gender"));
-//            patient.setHeight(row.getInt("height"));
-//            patient.setName(row.getString("name"));
-//            patient.setPreConditions(row.getString("preconditions"));
-//            patient.setWeight(row.getInt("weight"));
-//
-//        }
-//        return patient;
-//    }
-//    }
-
         @Override
         public SensorData retrieveSensorData(String uniqueId) {
             SensorData sensorData = null;
@@ -142,7 +109,7 @@ public class SensorDataDaoImpl implements SensorDataDao {
                 sensorData.setPatientId(row.getString("patient_id"));
                 sensorData.setTimeStamp(String.valueOf(row.getInstant("time_stamp")));
                 sensorData.setSensorDataId(row.getString("sensor_data_id"));
-                // sensorData.setSensorImage(String.valueOf(row.getByteBuffer("sensor_image")));
+                // bytebuffer to byte array to Hex string
                 sensorData.setSensorImage(bytesToHex((row.getByteBuffer("sensor_image")).array()));
 
 
