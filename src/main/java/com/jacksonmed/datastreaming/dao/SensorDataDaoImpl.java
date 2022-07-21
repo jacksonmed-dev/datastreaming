@@ -4,6 +4,9 @@ import com.datastax.oss.driver.api.core.ConsistencyLevel;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.BoundStatement;
 import com.datastax.oss.driver.api.core.cql.PreparedStatement;
+import com.datastax.oss.driver.api.core.cql.ResultSet;
+import com.datastax.oss.driver.api.core.cql.Row;
+import com.jacksonmed.datastreaming.model.Patient;
 import com.jacksonmed.datastreaming.model.SensorData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +25,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-
+import java.util.Iterator;
 @Component("SensorDataDaoImpl")
 public class SensorDataDaoImpl implements SensorDataDao {
     private static final String INSERT_SENSOR_DATA = "insert into sensor_data (patient_id, time_stamp, sensor_data_id, sensor_image) values (?, ?, ?, ?)";
-    private static final String SELECT_SENSOR_DATA_BY_UNIQUE_ID = "select * from test where name = ?";
+    private static final String SELECT_SENSOR_DATA_BY_UNIQUE_ID = "select * from sensor_data where patient_id = ?";
     @Autowired
     CqlSession cqlSession;
 
@@ -58,7 +61,16 @@ public class SensorDataDaoImpl implements SensorDataDao {
     }
 
 
-
+    private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
 
 
     @Override
@@ -80,10 +92,10 @@ public class SensorDataDaoImpl implements SensorDataDao {
         }
     }
 
-    @Override
-    public SensorData retrieveSensorData(String uniqueId) {
-        return null;
-    }
+//    @Override
+//    public SensorData retrieveSensorData(String uniqueId) {
+//        return null;
+//    }
 
 
 //    @Override
@@ -112,4 +124,29 @@ public class SensorDataDaoImpl implements SensorDataDao {
 //        return patient;
 //    }
 //    }
+
+        @Override
+        public SensorData retrieveSensorData(String uniqueId) {
+            SensorData sensorData = null;
+            PreparedStatement ps = cqlSession.prepare(SELECT_SENSOR_DATA_BY_UNIQUE_ID);
+            BoundStatement bs = ps.bind()
+                    .setString(0, uniqueId)
+                    .setConsistencyLevel(ConsistencyLevel.LOCAL_QUORUM);
+            ResultSet rs = cqlSession.execute(bs);
+            Iterator<Row> rsIterator = rs.iterator();
+            Blob image;
+            if (rsIterator.hasNext())
+            {
+                Row row = rsIterator.next();
+                sensorData = new SensorData();
+                sensorData.setPatientId(row.getString("patient_id"));
+                sensorData.setTimeStamp(String.valueOf(row.getInstant("time_stamp")));
+                sensorData.setSensorDataId(row.getString("sensor_data_id"));
+                // sensorData.setSensorImage(String.valueOf(row.getByteBuffer("sensor_image")));
+                sensorData.setSensorImage(bytesToHex((row.getByteBuffer("sensor_image")).array()));
+
+
+            }
+            return sensorData;
+        }
 }
